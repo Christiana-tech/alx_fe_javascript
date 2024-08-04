@@ -63,6 +63,18 @@ const quotes = [
   document.getElementById('newQuote').addEventListener('click', showRandomQuote);
   document.getElementById('showForm').addEventListener('click', createAddQuoteForm);
 
+  function exportToJson() {
+    const json = JSON.stringify(quotes);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'quotes.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+  
+
   function importFromJsonFile(event) {
     const fileReader = new FileReader();
     fileReader.onload = function(event) {
