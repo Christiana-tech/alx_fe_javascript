@@ -175,14 +175,12 @@ function updateCategoryDropdown(newCategory) {
 }
 
 
-const API_URL = "https://jsonplaceholder.typicode.com/posts";
-
-// Fetch quotes from the simulated server
+const API_URL = "https://jsonplaceholder.typicode.com/posts"
 async function fetchQuotesFromServer() {
     try {
         const response = await fetch(API_URL);
         const data = await response.json();
-        return data.map(quote => ({ text: quote.title, category: "Fetched" })); // Adjust as needed
+        return data.map(quote => ({ text: quote.title, category: "Fetched" })); /
     } catch (error) {
         console.error("Error fetching quotes from server:", error);
     }
@@ -255,14 +253,13 @@ function syncQuotesWithServer(serverQuotes) {
           localQuotes.push(serverQuote); // Add new quote from server
           notifyUser(`New quote added: "${serverQuote.text}"`);
       } else {
-          // Conflict: If a quote exists, resolve it (e.g., update or notify)
-          // Here, you could compare timestamps or versions if available
-          notifyUser(`Conflict detected for quote: "${serverQuote.text}". Server data takes precedence.`);
-          // Update local quote with server quote if needed
+         
+          notifyUser(`Conflict detected for quote: "${serverQuote.text}". Quotes synced with server!`);
+      
       }
   });
 
   localStorage.setItem("quotes", JSON.stringify(localQuotes));
-  quotes = localQuotes; // Update local quotes array
-  filterQuotes(); // Refresh displayed quotes
+  quotes = localQuotes; 
+  filterQuotes(); 
 }
