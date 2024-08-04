@@ -80,6 +80,7 @@ function exportToJson() {
     fileReader.onload = function(event) {
       const importedQuotes = JSON.parse(event.target.result);
       quotes.push(...importedQuotes);
+      localStorage.setItem
       saveQuotes();
       alert('Quotes imported successfully!');
     };
