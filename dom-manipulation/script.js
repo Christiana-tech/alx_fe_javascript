@@ -103,8 +103,6 @@ function exportToJson() {
   document.getElementById('exportJson').addEventListener('click', exportToJson);
   document.getElementById('importFile').addEventListener('change', importFromJsonFile);
   
-  // Initial display
-  showRandomQuote();
   
   // Initial display
   showRandomQuote();
