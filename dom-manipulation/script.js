@@ -105,4 +105,73 @@ const quotes = [
   document.getElementById('importFile').addEventListener('change', importFromJsonFile);
   
   // Initial display
-showRandomQuote();
+showRandomQuote();// Function to populate the category filter
+function populateCategories() {
+    const categoryFilter = document.getElementById("categoryFilter");
+    const categories = new Set(quotes.map(quote => quote.category));
+
+    // Clear existing options
+    categoryFilter.innerHTML = '<option value="all">All Categories</option>'; // Reset options
+
+    categories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        categoryFilter.appendChild(option);
+    });
+}
+
+// Function to filter and display quotes based on selected category
+function filterQuotes() {
+    const selectedCategory = document.getElementById("categoryFilter").value;
+    localStorage.setItem("selectedCategory", selectedCategory); // Store the selected category
+
+    const quoteDisplay = document.getElementById("quoteDisplay");
+    quoteDisplay.innerHTML = '';
+
+    const filteredQuotes = selectedCategory === "all" 
+        ? quotes 
+        : quotes.filter(quote => quote.category === selectedCategory);
+
+    filteredQuotes.forEach(quote => {
+        const quoteElement = document.createElement("p");
+        quoteElement.textContent = quote.text;
+        quoteDisplay.appendChild(quoteElement);
+    });
+}
+
+// Initialize the app
+function init() {
+    populateCategories();
+
+    // Retrieve the last selected category from localStorage
+    const lastSelectedCategory = localStorage.getItem("selectedCategory") || "all";
+    document.getElementById("categoryFilter").value = lastSelectedCategory;
+
+    filterQuotes(); // Display quotes based on the last selected category
+}
+
+// Call init function when the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", init);
+
+
+function addQuote(text, category) {
+  quotes.push({ text, category });
+  updateCategoryDropdown(category);
+  filterQuotes(); // Refresh displayed quotes after adding a new one
+}
+
+// Function to update the category dropdown if a new category is introduced
+function updateCategoryDropdown(newCategory) {
+  const categoryFilter = document.getElementById("categoryFilter");
+  const existingCategories = Array.from(categoryFilter.options).map(option => option.value);
+
+  if (!existingCategories.includes(newCategory)) {
+      const option = document.createElement("option");
+      option.value = newCategory;
+      option.textContent = newCategory;
+      categoryFilter.appendChild(option);
+  }
+}
+
+
