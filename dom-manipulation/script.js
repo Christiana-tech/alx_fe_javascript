@@ -56,37 +56,28 @@ const quotes = [
       alert('Please enter both a quote and a category.');
     }
   }
+
+  <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
   
   // Event listeners for buttons
   document.getElementById('newQuote').addEventListener('click', showRandomQuote);
   document.getElementById('showForm').addEventListener('click', createAddQuoteForm);
 
-
-  // Function to export quotes to JSON
-function exportToJson() {
-    const json = JSON.stringify(quotes);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'quotes.json';
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-  
-  // Function to import quotes from JSON file
   function importFromJsonFile(event) {
     const fileReader = new FileReader();
     fileReader.onload = function(event) {
       const importedQuotes = JSON.parse(event.target.result);
       quotes.push(...importedQuotes);
-    
-      function saveQuotes() {
         localStorage.setItem('quotes', JSON.stringify(quotes));
-      }
-  // Load quotes and last viewed quote on initialization
+        localStorage.getItem('quotes');
+      alert('Quotes imported successfully!');
+    };
+    fileReader.readAsText(event.target.files[0]);
+  }
+
+
   window.onload = function() {
-    loadQuotes();
+    loadQuotes();  // Load quotes from local storage on page load
     showRandomQuote();
     const lastViewedQuote = JSON.parse(sessionStorage.getItem('lastViewedQuote'));
     if (lastViewedQuote) {
@@ -101,7 +92,5 @@ function exportToJson() {
   document.getElementById('exportJson').addEventListener('click', exportToJson);
   document.getElementById('importFile').addEventListener('change', importFromJsonFile);
   
-  
   // Initial display
-  showRandomQuote();
-  
+showRandomQuote();
