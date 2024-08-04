@@ -175,3 +175,71 @@ function updateCategoryDropdown(newCategory) {
 }
 
 
+const API_URL = "https://jsonplaceholder.typicode.com/posts";
+
+// Fetch quotes from the simulated server
+async function fetchQuotesFromServer() {
+    try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        return data.map(quote => ({ text: quote.title, category: "Fetched" })); // Adjust as needed
+    } catch (error) {
+        console.error("Error fetching quotes from server:", error);
+    }
+}
+
+// Simulate posting a new quote to the server
+async function postQuoteToServer(quote) {
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title: quote.text,
+                body: quote.category // Simulate saving category
+            })
+        });
+        return response.json();
+    } catch (error) {
+        console.error("Error posting quote to server:", error);
+    }
+}
+function startDataSync() {
+  setInterval(async () => {
+      const serverQuotes = await fetchQuotesFromServer();
+      if (serverQuotes.length) {
+          syncQuotesWithServer(serverQuotes);
+      }
+  }, 30000); // Fetch every 30 seconds
+}
+function syncQuotesWithServer(serverQuotes) {
+  const localQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
+
+  serverQuotes.forEach(serverQuote => {
+      const exists = localQuotes.find(quote => quote.text === serverQuote.text && quote.category === serverQuote.category);
+      if (!exists) {
+          localQuotes.push(serverQuote); // Add new quote from server
+      }
+  });
+
+  localStorage.setItem("quotes", JSON.stringify(localQuotes));
+  quotes = localQuotes; // Update local quotes array
+  filterQuotes(); // Refresh displayed quotes
+}
+function notifyUser(message) {
+  const notification = document.createElement("div");
+  notification.textContent = message;
+  notification.style.position = "fixed";
+  notification.style.bottom = "10px";
+  notification.style.right = "10px";
+  notification.style.backgroundColor = "lightyellow";
+  notification.style.padding = "10px";
+  notification.style.border = "1px solid #ccc";
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+      document.body.removeChild(notification);
+  }, 5000); // Remove notification after 5 seconds
+}
