@@ -1,4 +1,4 @@
-// Array to store quotes
+/// Array to store quotes
 const quotes = [
     { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
     { text: "Life is what happens when you're busy making other plans.", category: "Life" },
@@ -13,8 +13,37 @@ const quotes = [
     quoteDisplay.innerHTML = `<p>${quote.text}</p><p><em>${quote.category}</em></p>`;
   }
   
-  // Function to add a new quote
+  // Function to create the add quote form using createElement and appendChild
   function createAddQuoteForm() {
+    const formContainer = document.getElementById('formContainer');
+    formContainer.innerHTML = ''; // Clear any existing content
+  
+    // Create form elements
+    const newQuoteTextInput = document.createElement('input');
+    newQuoteTextInput.id = 'newQuoteText';
+    newQuoteTextInput.type = 'text';
+    newQuoteTextInput.placeholder = 'Enter a new quote';
+  
+    const newQuoteCategoryInput = document.createElement('input');
+    newQuoteCategoryInput.id = 'newQuoteCategory';
+    newQuoteCategoryInput.type = 'text';
+    newQuoteCategoryInput.placeholder = 'Enter quote category';
+  
+    const addQuoteButton = document.createElement('button');
+    addQuoteButton.id = 'addQuoteButton';
+    addQuoteButton.textContent = 'Add Quote';
+  
+    // Append form elements to the form container
+    formContainer.appendChild(newQuoteTextInput);
+    formContainer.appendChild(newQuoteCategoryInput);
+    formContainer.appendChild(addQuoteButton);
+  
+    // Add event listener to the newly created button
+    addQuoteButton.addEventListener('click', addQuote);
+  }
+  
+  // Function to add a new quote
+  function addQuote() {
     const newQuoteText = document.getElementById('newQuoteText').value;
     const newQuoteCategory = document.getElementById('newQuoteCategory').value;
   
@@ -30,7 +59,7 @@ const quotes = [
   
   // Event listeners for buttons
   document.getElementById('newQuote').addEventListener('click', showRandomQuote);
-  document.getElementById('addQuoteButton').addEventListener('click', addQuote);
+  document.getElementById('showForm').addEventListener('click', createAddQuoteForm);
   
   // Initial display
   showRandomQuote();
