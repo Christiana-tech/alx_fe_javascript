@@ -80,13 +80,10 @@ function exportToJson() {
     fileReader.onload = function(event) {
       const importedQuotes = JSON.parse(event.target.result);
       quotes.push(...importedQuotes);
-      localStorage.setItem
-      saveQuotes();
-      alert('Quotes imported successfully!');
-    };
-    fileReader.readAsText(event.target.files[0]);
-  }
-  
+    
+      function saveQuotes() {
+        localStorage.setItem('quotes', JSON.stringify(quotes));
+      }
   // Load quotes and last viewed quote on initialization
   window.onload = function() {
     loadQuotes();
