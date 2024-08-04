@@ -57,7 +57,7 @@ const quotes = [
     }
   }
 
-  <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+ 
   
   // Event listeners for buttons
   document.getElementById('newQuote').addEventListener('click', showRandomQuote);
