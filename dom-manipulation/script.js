@@ -243,3 +243,26 @@ function notifyUser(message) {
       document.body.removeChild(notification);
   }, 5000); // Remove notification after 5 seconds
 }
+
+
+function syncQuotesWithServer(serverQuotes) {
+  const localQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
+
+  serverQuotes.forEach(serverQuote => {
+      const exists = localQuotes.find(quote => quote.text === serverQuote.text && quote.category === serverQuote.category);
+      
+      if (!exists) {
+          localQuotes.push(serverQuote); // Add new quote from server
+          notifyUser(`New quote added: "${serverQuote.text}"`);
+      } else {
+          // Conflict: If a quote exists, resolve it (e.g., update or notify)
+          // Here, you could compare timestamps or versions if available
+          notifyUser(`Conflict detected for quote: "${serverQuote.text}". Server data takes precedence.`);
+          // Update local quote with server quote if needed
+      }
+  });
+
+  localStorage.setItem("quotes", JSON.stringify(localQuotes));
+  quotes = localQuotes; // Update local quotes array
+  filterQuotes(); // Refresh displayed quotes
+}
